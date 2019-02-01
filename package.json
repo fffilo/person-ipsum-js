@@ -1,0 +1,23 @@
+{
+  "name": "person-ipsum-js",
+  "title": "Person Ipsum",
+  "description": "JavaScript random name generator...",
+  "version": "0.1.0",
+  "main": "src/person-ipsum.js",
+  "homepage": "https://github.com/fffilo/person-ipsum-js",
+  "authors": [
+    "Franjo Filo <fffilo666@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fffilo/person-ipsum-js.git"
+  },
+  "keywords": [
+    "javascript",
+    "person",
+    "ipsum",
+    "random",
+    "name",
+    "generator"
+  ]
+}
