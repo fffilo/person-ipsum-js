@@ -46,6 +46,40 @@
     PersonIpsum.FORMAT_REVERSE = 8;
 
     /**
+     * Extend PersonIpsum constructor
+     * with new names
+     *
+     * @param  {Object}   config
+     * @return {Function}
+     */
+    PersonIpsum.extend = function(config) {
+        var PersonIpsumCustom = function(options) {
+            if (!(this instanceof PersonIpsumCustom))
+                throw "PersonIpsumCustom: PersonIpsumCustom is a constructor.";
+
+            this._init(options);
+        }
+
+        // extend
+        _extend(PersonIpsumCustom, PersonIpsum);
+        _extend(PersonIpsumCustom.prototype, PersonIpsum.prototype);
+
+        // config
+        if (config) {
+            if ("lastName" in config)
+                PersonIpsumCustom.prototype._lastName = config.lastName;
+            if ("firstNameMale" in config)
+                PersonIpsumCustom.prototype._firstNameMale = config.firstNameMale;
+            if ("firstNameFemale" in config)
+                PersonIpsumCustom.prototype._firstNameFemale = config.firstNameFemale;
+            if ("initial" in config)
+                PersonIpsumCustom.prototype._initial = config.initial;
+        }
+
+        return PersonIpsumCustom;
+    }
+
+    /**
      * PersonIpsum prototype
      *
      * @type {Object}
@@ -68,7 +102,7 @@
          *
          * @type {Array}
          */
-        _male: [ "Anthony", "Brian", "Charles", "Christopher", "Daniel", "David", "Donald", "Edward", "George", "James", "Jason", "Jeff", "John", "Joseph", "Kenneth", "Kevin", "Mark", "Michael", "Paul", "Richard", "Robert", "Ronald", "Steven", "Thomas", "William" ],
+        _firstNameMale: [ "Anthony", "Brian", "Charles", "Christopher", "Daniel", "David", "Donald", "Edward", "George", "James", "Jason", "Jeff", "John", "Joseph", "Kenneth", "Kevin", "Mark", "Michael", "Paul", "Richard", "Robert", "Ronald", "Steven", "Thomas", "William" ],
 
         /**
          * 50 most common American
@@ -76,7 +110,7 @@
          *
          * @type {Array}
          */
-        _female: [ "Barbara", "Betty", "Carol", "Deborah", "Donna", "Dorothy", "Elizabeth", "Helen", "Jennifer", "Karen", "Kimberly", "Laura", "Linda", "Lisa", "Margaret", "Maria", "Mary", "Michelle", "Nancy", "Patricia", "Ruth", "Sandra", "Sarah", "Sharon", "Susan" ],
+        _firstNameFemale: [ "Barbara", "Betty", "Carol", "Deborah", "Donna", "Dorothy", "Elizabeth", "Helen", "Jennifer", "Karen", "Kimberly", "Laura", "Linda", "Lisa", "Margaret", "Maria", "Mary", "Michelle", "Nancy", "Patricia", "Ruth", "Sandra", "Sarah", "Sharon", "Susan" ],
 
         /**
          * Possible initial character
@@ -273,11 +307,11 @@
          */
         _randomFirstName: function(gender) {
             if (gender === PersonIpsum.GENDER_MALE)
-                return this._random(this._male);
+                return this._random(this._firstNameMale);
             else if (gender === PersonIpsum.GENDER_FEMALE)
-                return this._random(this._female);
+                return this._random(this._firstNameFemale);
 
-            var source = [].concat(this._male).concat(this._female);
+            var source = [].concat(this._firstNameMale).concat(this._firstNameFemale);
             return this._random(source);
         },
 
