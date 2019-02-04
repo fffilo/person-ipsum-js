@@ -200,7 +200,8 @@
                 enums = this._enum(key),
                 source = [];
             Object.keys(enums).forEach(function(item) {
-                source.push(enums[item]);
+                if (result & enums[item])
+                    source.push(enums[item]);
             });
 
             return this._random(source);
