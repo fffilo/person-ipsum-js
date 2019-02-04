@@ -158,19 +158,36 @@
         },
 
         /**
+         * Get property by key name
+         *
+         * @param  {String} key
+         * @return {Number}
+         */
+        _get: function(key) {
+            var result = this[key],
+                enums = this._enum(key),
+                source = [];
+            Object.keys(enums).forEach(function(item) {
+                source.push(enums[item]);
+            });
+
+            return this._random(source);
+        },
+
+        /**
          * Get enum as object
          *
-         * @param  {String} prefix
+         * @param  {String} key
          * @return {Object}
          */
-        _enum: function(prefix) {
-            prefix = prefix.toString().toUpperCase();
+        _enum: function(key) {
+            key = key.toString().toUpperCase();
 
             var result = {};
             for (var prop in PersonIpsum) {
-                if (prop.substr(0, prefix.length) === prefix) {
+                if (prop.substr(0, key.length) === key) {
                     var num = PersonIpsum[prop],
-                        str = prop.substring(prefix.length + 1);
+                        str = prop.substring(key.length + 1);
 
                     result[str] = num;
                 }
@@ -182,14 +199,14 @@
         /**
          * Validate enum
          *
-         * @param  {String} prefix
+         * @param  {String} key
          * @param  {Mixed}  value
          * @return {Number}
          */
-        _validate: function(prefix, value) {
-            if (prefix) {
-                prefix = prefix.toString().toUpperCase();
-                var enums = this._enum(prefix);
+        _validate: function(key, value) {
+            if (key) {
+                key = key.toString().toUpperCase();
+                var enums = this._enum(key);
 
                 if (typeof value === "number") {
                     var num = Object.keys(enums).map(function(item) {
@@ -245,24 +262,22 @@
          * @return {String}
          */
         _randomLastName: function() {
-            var source = this._lastName;
-            return this._random(source);
+            return this._random(this._lastName);
         },
 
         /**
          * Generate random first name
          *
+         * @param  {Number} gender (optional)
          * @return {String}
          */
-        _randomFirstName: function() {
-            var source, gender = this.gender;
+        _randomFirstName: function(gender) {
             if (gender === PersonIpsum.GENDER_MALE)
-                source = this._male;
+                return this._random(this._male);
             else if (gender === PersonIpsum.GENDER_FEMALE)
-                source = this._female;
-            else
-                source = [].concat(this._male).concat(this._female);
+                return this._random(this._female);
 
+            var source = [].concat(this._male).concat(this._female);
             return this._random(source);
         },
 
@@ -272,8 +287,7 @@
          * @return {String}
          */
         _randomInitial: function() {
-            var source = this._initial;
-            return this._random(source);
+            return this._random(this._initial);
         },
 
         /**
@@ -282,27 +296,17 @@
          * @return {String}
          */
         generate: function() {
-            var result,
-                uses = [],
-                format = this.format;
-            if (format & PersonIpsum.FORMAT_REVERSE)
-                uses.push(PersonIpsum.FORMAT_REVERSE);
-            if (format & PersonIpsum.FORMAT_MIDDLE)
-                uses.push(PersonIpsum.FORMAT_MIDDLE);
-            if (format & PersonIpsum.FORMAT_INITIAL)
-                uses.push(PersonIpsum.FORMAT_INITIAL);
-            if (format & PersonIpsum.FORMAT_NORMAL)
-                uses.push(PersonIpsum.FORMAT_NORMAL);
-            format = uses[Math.floor(Math.random() * uses.length)];
+            var gender = this._get("gender"),
+                format = this._get("format");
 
             if (format === PersonIpsum.FORMAT_REVERSE)
-                return this._randomLastName() + ", " + this._randomFirstName();
+                return this._randomLastName() + ", " + this._randomFirstName(gender);
             else if (format === PersonIpsum.FORMAT_MIDDLE)
-                return this._randomFirstName() + " " + this._randomFirstName() + " " + this._randomLastName();
+                return this._randomFirstName(gender) + " " + this._randomFirstName(gender) + " " + this._randomLastName();
             else if (format === PersonIpsum.FORMAT_INITIAL)
-                return this._randomFirstName() + " " + this._randomInitial() + ". " + this._randomLastName();
+                return this._randomFirstName(gender) + " " + this._randomInitial() + ". " + this._randomLastName();
             else
-                return this._randomFirstName() + " " + this._randomLastName();
+                return this._randomFirstName(gender) + " " + this._randomLastName();
         },
 
     });
