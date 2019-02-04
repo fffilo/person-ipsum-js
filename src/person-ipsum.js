@@ -90,8 +90,6 @@
          * 50 most common American
          * last names
          *
-         * source: http://eslyes.com/namesdict/popular_names.htm
-         *
          * @type {Array}
          */
         _lastName: [ "Adams", "Allen", "Anderson", "Baker", "Brown", "Campbell", "Carter", "Clark", "Collins", "Davis", "Edwards", "Evans", "Garcia", "Gonzalez", "Green", "Hall", "Harris", "Hernandez", "Hill", "Jackson", "Johnson", "Jones", "King", "Lee", "Lewis", "Lopez", "Martin", "Martinez", "Miller", "Mitchell", "Moore", "Nelson", "Parker", "Perez", "Phillips", "Roberts", "Robinson", "Rodriguez", "Scott", "Smith", "Taylor", "Thomas", "Thompson", "Turner", "Walker", "White", "Williams", "Wilson", "Wright", "Young" ],
